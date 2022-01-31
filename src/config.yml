@@ -1,0 +1,44 @@
+save_path: '../models/sgd_250/new_mm'
+load_checkpoint: ''
+training_type: 'mixmatch' # fs
+
+
+cifar10:
+  batch_size: 64
+  num_outputs: 10
+  num_labeled: 250
+
+svhn:
+  batch_size: 64
+  num_outputs: 10
+  num_labeled: 250
+
+MixMatchTrainer:
+  n_steps: 100000
+  K: 2
+  dataset: 'cifar10' #  'cifar10' or 'svhn'
+
+  lambda_u:
+    lambda_u_max: 75 # 75 for cifar, 250 for svhn
+    step_top_up: 16000
+
+  steps_validation: 1000 # steps to print validation losses and accuracy
+  steps_checkpoint: 5000
+  use_pseudo: False
+  tau: 0.99
+
+  optimizer: 'sgd'
+  adam:
+    lr: 0.002
+    weight_decay: 0 # 0.0004
+  sgd:
+    lr: 0.03
+    momentum: 0.9
+    weight_decay: 0.0005
+    lr_decay_steps: {30_000, 60_000, 80_000}
+
+
+WideResNet:
+  depth: 28
+  k: 2
+  n_out: 10
